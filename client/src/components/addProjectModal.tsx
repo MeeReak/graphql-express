@@ -1,0 +1,88 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { FaTasks } from "react-icons/fa";
+import { InputWithLabel } from "./inputWithLabel";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { CREATE_CLIENT } from "@/mutation/clientMutation";
+import { GET_CLIENT } from "@/queries/clientQueries";
+
+export function AlertDialogProject() {
+  const [client, setClient] = useState({ name: "", email: "", phone: "" });
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setClient((prevClient) => ({
+      ...prevClient, // Spread the previous client state
+      [name]: value, // Update the specific field (name, email, or phone)
+    }));
+  }
+
+  const [createClient] = useMutation(CREATE_CLIENT, {
+    variables: {
+      name: client.name,
+      email: client.email,
+      phone: client.phone,
+    },
+    refetchQueries: [{ query: GET_CLIENT }],
+    onCompleted: (data) => {
+      console.log("Client created successfully:", data);
+      // Optionally reset the form or provide user feedback
+      setClient({ name: "", email: "", phone: "" });
+    },
+    onError: (error) => {
+      console.error("Error creating client:", error);
+    },
+  });
+
+  const onSubmit = () => {
+    createClient();
+  };
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">
+          <FaTasks className="mr-2" /> Add Project
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <h2>New Project</h2>
+          <InputWithLabel
+            handleChange={handleChange}
+            type="name"
+            label="Name"
+          />
+          <InputWithLabel
+            handleChange={handleChange}
+            type="description"
+            label="Description"
+          />
+
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onSubmit}
+            disabled={
+              client.email !== "" && client.name !== "" && client.phone !== ""
+                ? false
+                : true
+            }
+          >
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
