@@ -13,7 +13,7 @@ import { InputWithLabel } from "./inputWithLabel";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_CLIENT } from "@/mutation/clientMutation";
-import { GET_CLIENT } from "@/queries/clientQueries";
+import { GET_CLIENTS } from "@/queries/clientQueries";
 
 export function AlertDialogDemo() {
   const [client, setClient] = useState({ name: "", email: "", phone: "" });
@@ -32,7 +32,7 @@ export function AlertDialogDemo() {
       email: client.email,
       phone: client.phone,
     },
-    refetchQueries: [{ query: GET_CLIENT }],
+    refetchQueries: [{ query: GET_CLIENTS }],
     onCompleted: (data) => {
       console.log("Client created successfully:", data);
       // Optionally reset the form or provide user feedback

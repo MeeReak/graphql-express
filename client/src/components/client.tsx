@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { ClientRow, IClient } from "./clientRow";
-import { GET_CLIENT } from "@/queries/clientQueries";
+import { GET_CLIENTS } from "@/queries/clientQueries";
 import { Loading } from "./loading";
 
 export const Client = () => {
-  const { loading, error, data } = useQuery(GET_CLIENT);
+  const { loading, error, data } = useQuery(GET_CLIENTS);
 
   if (loading) {
     return <Loading />;

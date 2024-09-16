@@ -1,5 +1,6 @@
 import { DELETE_CLIENT } from "@/mutation/clientMutation";
-import { GET_CLIENT } from "@/queries/clientQueries";
+import { GET_CLIENTS } from "@/queries/clientQueries";
+import { GET_PROJECTS } from "@/queries/projectQueries";
 import { useMutation } from "@apollo/client";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
@@ -9,7 +10,7 @@ export interface IClient {
   name: string;
   email: string;
   phone: string;
-} 
+}
 
 export const ClientRow = (client: IClient) => {
   const [deleteClient] = useMutation(DELETE_CLIENT);
@@ -20,7 +21,7 @@ export const ClientRow = (client: IClient) => {
       try {
         await deleteClient({
           variables: { id: client.id },
-          refetchQueries: [{ query: GET_CLIENT }],
+          refetchQueries: [{ query: GET_CLIENTS }, { query: GET_PROJECTS }],
         });
       } catch (error) {
         console.error("Error deleting client:", error);

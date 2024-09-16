@@ -11,41 +11,74 @@ import { Button } from "@/components/ui/button";
 import { FaTasks } from "react-icons/fa";
 import { InputWithLabel } from "./inputWithLabel";
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { CREATE_CLIENT } from "@/mutation/clientMutation";
-import { GET_CLIENT } from "@/queries/clientQueries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_CLIENTS } from "@/queries/clientQueries";
+import { SelectDemo } from "./selectDemo";
+import { Loading } from "./loading";
+import { CREATE_PROJECT } from "@/mutation/projectMutation";
+import { GET_PROJECTS } from "@/queries/projectQueries";
 
 export function AlertDialogProject() {
-  const [client, setClient] = useState({ name: "", email: "", phone: "" });
+  const [project, setProject] = useState({
+    name: "",
+    description: "",
+    status: "",
+    clientId: "",
+  });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setClient((prevClient) => ({
-      ...prevClient, // Spread the previous client state
-      [name]: value, // Update the specific field (name, email, or phone)
+    setProject((proProject) => ({
+      ...proProject,
+      [name]: value,
     }));
   }
 
-  const [createClient] = useMutation(CREATE_CLIENT, {
+  const handleSelectChange = (selectedValue: string) => {
+    setProject((prevProject) => ({
+      ...prevProject,
+      status: selectedValue, // Update status in the project state
+    }));
+  };
+
+  const handleClientChange = (selectedValue: string) => {
+    setProject((prevProject) => ({
+      ...prevProject,
+      clientId: selectedValue, // Update clientId in the project state
+    }));
+  };
+
+  const [createProject] = useMutation(CREATE_PROJECT, {
     variables: {
-      name: client.name,
-      email: client.email,
-      phone: client.phone,
+      name: project.name,
+      description: project.description,
+      status: project.status,
+      clientId: project.clientId,
     },
-    refetchQueries: [{ query: GET_CLIENT }],
+    refetchQueries: [{ query: GET_PROJECTS }],
     onCompleted: (data) => {
-      console.log("Client created successfully:", data);
+      console.log("Project created successfully:", data);
       // Optionally reset the form or provide user feedback
-      setClient({ name: "", email: "", phone: "" });
+      setProject({ name: "", description: "", status: "", clientId: "" });
     },
     onError: (error) => {
-      console.error("Error creating client:", error);
+      console.error("Error creating Project:", error);
     },
   });
 
   const onSubmit = () => {
-    createClient();
+    createProject();
   };
+
+  const { loading, error, data } = useQuery(GET_CLIENTS);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <p>Error loading data...</p>;
+  }
 
   return (
     <AlertDialog>
@@ -56,25 +89,36 @@ export function AlertDialogProject() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <h2>New Project</h2>
+          <h1 className="mb-5 font-bold text-lg">New Project</h1>
           <InputWithLabel
             handleChange={handleChange}
             type="name"
             label="Name"
           />
           <InputWithLabel
+            className=""
             handleChange={handleChange}
             type="description"
             label="Description"
           />
+          <p>Status</p>
+          <SelectDemo handleChange={handleSelectChange} />
 
+          <p>Client</p>
+          <SelectDemo
+            handleChange={handleClientChange}
+            clients={data.getAllClient}
+          />
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={onSubmit}
             disabled={
-              client.email !== "" && client.name !== "" && client.phone !== ""
+              project.name !== "" &&
+              project.description !== "" &&
+              project.status !== "" &&
+              project.clientId !== ""
                 ? false
                 : true
             }

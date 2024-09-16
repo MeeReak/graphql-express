@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-const GET_CLIENT = gql`
-  query getClient {
+const GET_CLIENTS = gql`
+  query getClients {
     getAllClient {
       id
       name
@@ -11,4 +11,15 @@ const GET_CLIENT = gql`
   }
 `;
 
-export { GET_CLIENT };
+const GET_CLIENT = gql`
+  query getClients($id: ID!) {
+    getClientById(id: $id) {
+      id
+      name
+      email
+      phone
+    }
+  }
+`;
+
+export { GET_CLIENTS, GET_CLIENT };
