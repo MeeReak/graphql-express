@@ -18,7 +18,6 @@ export const Project = () => {
   return (
     <>
       <div className="p-4 grid grid-cols-3">
-        {" "}
         {data.getAllProject.map((project: IProject) => (
           <ProjectCard
             clientId={project.clientId}

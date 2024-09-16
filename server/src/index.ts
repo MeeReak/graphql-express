@@ -1,19 +1,24 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { graphqlHTTP } from "express-graphql";
 import { schema } from "@/Schema/schema";
 import dotenv from "dotenv";
-import cors from "cors"
+import cors from "cors";
 
 dotenv.config();
 
 const app: Application = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 //testing route
 app.use("/health", (_req: Request, res: Response) => {
   res.json({ Health: "This Server is Good!!" });
+});
+
+app.use("/", (_req: Request, res: Response, next: NextFunction) => {
+  console.log(_req.method, _req.path);
+  next();
 });
 
 //connect to mongoDB

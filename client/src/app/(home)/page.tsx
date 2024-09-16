@@ -8,8 +8,10 @@ import { Project } from "@/components/project";
 export default function Home() {
   return (
     <div className=" space-y-5 w-[80%] mx-auto">
-      <AlertDialogDemo />
-      <AlertDialogProject />
+      <div className="flex  gap-4 ml-4 mt-5">
+        <AlertDialogDemo />
+        <AlertDialogProject />
+      </div>
       <Project />
       <Client />
     </div>

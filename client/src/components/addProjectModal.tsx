@@ -1,52 +1,41 @@
+"use client";
+
+import { useParams } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { FaTasks } from "react-icons/fa";
+import { FaEdit, FaTasks } from "react-icons/fa";
 import { InputWithLabel } from "./inputWithLabel";
 import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CLIENTS } from "@/queries/clientQueries";
 import { SelectDemo } from "./selectDemo";
 import { Loading } from "./loading";
-import { CREATE_PROJECT } from "@/mutation/projectMutation";
-import { GET_PROJECTS } from "@/queries/projectQueries";
+import { CREATE_PROJECT, UPDATE_PROJECT } from "@/mutation/projectMutation";
+import { GET_PROJECT, GET_PROJECTS } from "@/queries/projectQueries";
+import { IProject } from "./projectCard";
+import { TextareaDemo } from "./areaInput";
 
-export function AlertDialogProject() {
+export function AlertDialogProject({
+  updateProject,
+}: {
+  updateProject?: IProject;
+}) {
   const [project, setProject] = useState({
-    name: "",
-    description: "",
-    status: "",
-    clientId: "",
+    name: updateProject ? updateProject.name : "",
+    description: updateProject ? updateProject.description : "",
+    status: updateProject ? updateProject.status : "",
+    clientId: updateProject ? updateProject.client!.id : "",
   });
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-    setProject((proProject) => ({
-      ...proProject,
-      [name]: value,
-    }));
-  }
-
-  const handleSelectChange = (selectedValue: string) => {
-    setProject((prevProject) => ({
-      ...prevProject,
-      status: selectedValue, // Update status in the project state
-    }));
-  };
-
-  const handleClientChange = (selectedValue: string) => {
-    setProject((prevProject) => ({
-      ...prevProject,
-      clientId: selectedValue, // Update clientId in the project state
-    }));
-  };
 
   const [createProject] = useMutation(CREATE_PROJECT, {
     variables: {
@@ -65,9 +54,63 @@ export function AlertDialogProject() {
       console.error("Error creating Project:", error);
     },
   });
+  const params = useParams<{ slug: string }>();
+
+  const [updateProjects] = useMutation(UPDATE_PROJECT, {
+    variables: {
+      id: params.slug,
+      name: project.name,
+      description: project.description,
+      status: project.status,
+      clientId: project.clientId,
+    },
+    refetchQueries: [{ query: GET_PROJECT, variables: { id: params.slug } }], // Refetch the project by ID
+    onCompleted: (data) => {
+      console.log("Project created successfully:", data);
+      // Optionally reset the form or provide user feedback
+      // setProject({ name: "", description: "", status: "", clientId: "" });
+    },
+    onError: (error) => {
+      console.error("Error creating Project:", error);
+    },
+  });
+
+  function handleChange(
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    const { name, value } = e.target;
+    setProject((proProject) => ({
+      ...proProject,
+      [name]: value,
+    }));
+  }
+
+  const handleSelectChange = (selectedValue: string) => {
+    // Allow changing status only if it's not 'Done' or it's an update
+    if (project.status === "Done" && !updateProject) return;
+
+    // Log to check if the function is being triggered and what value is selected
+    console.log("Selected value:", selectedValue);
+
+    setProject((prevProject) => ({
+      ...prevProject,
+      status: selectedValue, // Update status
+    }));
+  };
+
+  const handleClientChange = (selectedValue: string) => {
+    setProject((prevProject) => ({
+      ...prevProject,
+      clientId: selectedValue, // Update clientId in the project state
+    }));
+  };
 
   const onSubmit = () => {
-    createProject();
+    // e: React.FormEvent<HTMLInputElement>
+    // e.preventDefault();
+    params.slug ? updateProjects() : createProject();
   };
 
   const { loading, error, data } = useQuery(GET_CLIENTS);
@@ -83,32 +126,52 @@ export function AlertDialogProject() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">
-          <FaTasks className="mr-2" /> Add Project
-        </Button>
+        {!params.slug ? (
+          <Button variant="outline">
+            <FaTasks className="mr-2" /> Add Project
+          </Button>
+        ) : (
+          <Button className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-md flex items-center justify-center min-w-[100px]">
+            <FaEdit className="mr-2" /> Edit
+          </Button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <h1 className="mb-5 font-bold text-lg">New Project</h1>
+          <AlertDialogTitle>New Project</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </AlertDialogDescription>
           <InputWithLabel
             handleChange={handleChange}
             type="name"
             label="Name"
+            value={updateProject && updateProject.name}
           />
-          <InputWithLabel
+          <TextareaDemo
             className=""
             handleChange={handleChange}
             type="description"
             label="Description"
+            value={updateProject && updateProject.description}
           />
           <p>Status</p>
-          <SelectDemo handleChange={handleSelectChange} />
-
-          <p>Client</p>
           <SelectDemo
-            handleChange={handleClientChange}
-            clients={data.getAllClient}
+            handleChange={handleSelectChange}
+            // value={updateProject && updateProject.status}
+            value={project.status} // Ensure the correct value is passed
           />
+
+          {!updateProject && (
+            <>
+              <p>Client</p>
+              <SelectDemo
+                handleChange={handleClientChange}
+                clients={data.getAllClient}
+              />
+            </>
+          )}
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

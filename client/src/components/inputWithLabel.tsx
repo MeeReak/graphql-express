@@ -6,10 +6,12 @@ export function InputWithLabel({
   label,
   handleChange,
   className,
+  value,
 }: {
   type: string;
   label: string;
   className?: string;
+  value?: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
@@ -21,6 +23,7 @@ export function InputWithLabel({
         type={type}
         id={type}
         placeholder={label}
+        defaultValue={value}
       />
     </div>
   );

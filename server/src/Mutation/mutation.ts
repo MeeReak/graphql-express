@@ -87,10 +87,11 @@ export const Mutation = new GraphQLObjectType({
     updateProject: {
       type: ProjectType,
       args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
         name: { type: new GraphQLNonNull(GraphQLString) },
         description: { type: new GraphQLNonNull(GraphQLString) },
         status: { type: new GraphQLNonNull(GraphQLString) },
-        clientIdL: { type: new GraphQLNonNull(GraphQLString) },
+        clientId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
         return Project.findByIdAndUpdate(

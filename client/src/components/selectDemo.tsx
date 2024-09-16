@@ -18,9 +18,10 @@ type ClientOption = {
 interface SelectDemoProps {
   clients?: ClientOption[] | null;
   handleChange: (value: string) => void;
+  value?: string; // The current value to show in the select box
 }
 
-export function SelectDemo({ clients, handleChange }: SelectDemoProps) {
+export function SelectDemo({ clients, handleChange, value }: SelectDemoProps) {
   const defaultStatusOptions: ClientOption[] = [
     { id: "Pending", name: "Pending" },
     { id: "Process", name: "Process" },
@@ -30,16 +31,23 @@ export function SelectDemo({ clients, handleChange }: SelectDemoProps) {
   const options = clients || defaultStatusOptions;
 
   return (
-    <Select onValueChange={handleChange}>
+    <Select value={value} onValueChange={handleChange}>
       <SelectTrigger className="max-w-sm">
         <SelectValue
           placeholder={clients ? "Select a Client" : "Select a Status"}
-        />
+        >
+          {value &&
+            options.find((option) => option.id.toString() === value)?.name}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           {options.map((option) => (
-            <SelectItem key={option.id} value={option.id.toString()}>
+            <SelectItem
+              key={option.id}
+              value={option.id.toString()}
+              disabled={value === "Done" && option.id !== "Done"} // Only disable if status is "Done"
+            >
               {option.name}
             </SelectItem>
           ))}
