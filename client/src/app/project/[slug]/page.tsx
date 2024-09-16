@@ -1,13 +1,13 @@
 "use client";
 
 import { AlertDialogProject } from "@/components/addProjectModal";
+import { DeleteAlert } from "@/components/deletePopup";
 import { Loading } from "@/components/loading";
-import { Button } from "@/components/ui/button";
 import { DELETE_PROJECT } from "@/mutation/projectMutation";
 import { GET_PROJECT, GET_PROJECTS } from "@/queries/projectQueries";
 import { useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
-import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface PageProps {
   params: {
@@ -46,6 +46,7 @@ export default function Page({ params }: PageProps) {
   });
 
   const handleDelete = () => {
+    // e.preventDefault(); e: React.FormEvent<HTMLInputElement>
     deleteProject();
   };
 
@@ -60,20 +61,20 @@ export default function Page({ params }: PageProps) {
   const project = data.getProjectByID;
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6 my-8">
+    <div className="max-w-md mx-auto border-white border-2 shadow-md rounded-md p-6 my-8">
       <div className="flex items-center mb-4">
         <Link href={"/"}>
-          <button className="bg-green-500 text-white p-2 rounded-full hover:bg-green-700 mr-3">
+          <button className="bg-green-500 text-white p-2 rounded-full hover:bg-yellow-500 mr-3">
             <FaArrowLeft />
           </button>
         </Link>
-        <h1 className="text-green-600 text-xl font-bold">Project Detail</h1>
+        <h1 className=" text-white text-xl font-bold">Project Detail</h1>
       </div>
 
-      <h2 className="text-xl font-bold text-green-600 mb-2">{project.name}</h2>
-      <p className="text-gray-600 mb-4">{project.description}</p>
+      <h2 className="text-xl font-bold text-white mb-2">{project.name}</h2>
+      <p className="text-white mb-4">{project.description}</p>
 
-      <div className="bg-green-50 p-4 rounded-md">
+      <div className="bg-white p-4 rounded-md">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           Project Status
         </h3>
@@ -89,15 +90,21 @@ export default function Page({ params }: PageProps) {
           Client Information
         </h3>
         <div className="flex items-center mb-2">
-          <span className="material-icons text-green-600 mr-2">Name</span>
+          <span className="material-icons font-semibold text-green-500 mr-2">
+            Name :
+          </span>
           <p className="text-gray-800">{project.client.name}</p>
         </div>
         <div className="flex items-center mb-2">
-          <span className="material-icons text-green-600 mr-2">Email</span>
+          <span className="material-icons font-semibold text-green-500 mr-2">
+            Email :
+          </span>
           <p className="text-gray-800">{project.client.email}</p>
         </div>
         <div className="flex items-center">
-          <span className="material-icons text-green-600 mr-2">Phone</span>
+          <span className="material-icons font-semibold text-green-500 mr-2">
+            Phone:
+          </span>
           <p className="text-gray-800">{project.client.phone}</p>
         </div>
       </div>
@@ -105,14 +112,7 @@ export default function Page({ params }: PageProps) {
       <div className="flex justify-end gap-4 mt-6">
         <AlertDialogProject updateProject={project} />
 
-        <Link href={"/"}>
-          <Button
-            onClick={handleDelete}
-            className="bg-red-500 text-white hover:bg-red-600 py-2 px-4 rounded-md flex items-center justify-center min-w-[100px]"
-          >
-            <FaTrash className="mr-2" /> Delete
-          </Button>
-        </Link>
+        <DeleteAlert handleDelete={handleDelete} />
       </div>
     </div>
   );

@@ -52,7 +52,10 @@ export function AlertDialogDemo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md"
+        >
           <FaUser className="mr-2" /> Add Client
         </Button>
       </AlertDialogTrigger>

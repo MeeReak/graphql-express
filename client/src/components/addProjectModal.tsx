@@ -127,11 +127,14 @@ export function AlertDialogProject({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         {!params.slug ? (
-          <Button variant="outline">
+          <Button
+            variant="outline"
+            className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md"
+          >
             <FaTasks className="mr-2" /> Add Project
           </Button>
         ) : (
-          <Button className="bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-md flex items-center justify-center min-w-[100px]">
+          <Button className="border-blue-500 border-2 text-blue-500 hover:bg-blue-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md bg-white">
             <FaEdit className="mr-2" /> Edit
           </Button>
         )}
@@ -150,7 +153,7 @@ export function AlertDialogProject({
             value={updateProject && updateProject.name}
           />
           <TextareaDemo
-            className=""
+            className="max-w-sm"
             handleChange={handleChange}
             type="description"
             label="Description"

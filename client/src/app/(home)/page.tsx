@@ -8,7 +8,7 @@ import { Project } from "@/components/project";
 export default function Home() {
   return (
     <div className=" space-y-5 w-[80%] mx-auto">
-      <div className="flex  gap-4 ml-4 mt-5">
+      <div className="flex  gap-4 ml-6 mt-5">
         <AlertDialogDemo />
         <AlertDialogProject />
       </div>
