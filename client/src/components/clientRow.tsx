@@ -30,14 +30,14 @@ export const ClientRow = (client: IClient) => {
   };
 
   return (
-    <tr className="border-b border-green-200 hover:bg-green-50 transition duration-150">
-      <td className="p-4 text-green-900">{client.name}</td>
-      <td className="p-4 text-green-900">{client.email}</td>
-      <td className="p-4 text-green-900">{client.phone}</td>
+    <tr className="border-b border-green-500 hover:bg-green-100 transition duration-150">
+      <td className="p-4 text-green-500">{client.name}</td>
+      <td className="p-4 text-green-500">{client.email}</td>
+      <td className="p-4 text-green-500">{client.phone}</td>
       <td className="p-4 text-center">
         <button
           onClick={handleDelete}
-          className="text-red-600 hover:text-red-900 focus:outline-none"
+          className="text-red-500 hover:text-red-600 focus:outline-none"
         >
           <FaTrash className="inline-block" />
         </button>

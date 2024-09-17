@@ -59,7 +59,7 @@ export function AlertDialogDemo() {
           <FaUser className="mr-2" /> Add Client
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="text-green-500">
         <AlertDialogTitle>New Client</AlertDialogTitle>
         <AlertDialogDescription>
           This action cannot be undone. This will permanently delete your
@@ -83,8 +83,16 @@ export function AlertDialogDemo() {
           />
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel
+            onClick={() => {
+              setClient({ name: "", email: "", phone: "" });
+            }}
+            className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md"
+          >
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
+            className="  hover:border-green-500  text-white bg-green-500 flex items-center justify-center py-2 px-4 rounded-md"
             onClick={onSubmit}
             disabled={
               client.email !== "" && client.name !== "" && client.phone !== ""

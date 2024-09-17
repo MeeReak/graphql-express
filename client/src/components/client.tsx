@@ -19,19 +19,19 @@ export const Client = () => {
     <div className="container mx-auto p-4">
       {!error && !loading && (
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
+          <table className="max-w-[1024px] table-auto shadow-md">
             <thead>
-              <tr className="bg-green-100 border-b-2 border-green-300">
-                <th className="p-4 text-left text-green-700 font-semibold">
+              <tr className="border-green-500 border-2 ">
+                <th className="p-4 text-left text-green-500 font-semibold">
                   Name
                 </th>
-                <th className="p-4 text-left text-green-700 font-semibold">
+                <th className="p-4 text-left text-green-500 font-semibold">
                   Email
                 </th>
-                <th className="p-4 text-left text-green-700 font-semibold">
+                <th className="p-4 text-left text-green-500 font-semibold">
                   Phone
                 </th>
-                <th className="p-4 text-center text-green-700 font-semibold">
+                <th className="p-4 text-center text-green-500 font-semibold">
                   Actions
                 </th>
               </tr>

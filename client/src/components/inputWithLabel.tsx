@@ -16,8 +16,11 @@ export function InputWithLabel({
 }) {
   return (
     <div className={`grid w-full max-w-sm items-center gap-1.5 ${className}`}>
-      <Label htmlFor={type}>{label}</Label>
+      <Label className="text-base text-white" htmlFor={type}>
+        {label}
+      </Label>
       <Input
+        className=""
         name={type}
         onChange={handleChange}
         type={type}

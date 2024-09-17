@@ -134,14 +134,16 @@ export function AlertDialogProject({
             <FaTasks className="mr-2" /> Add Project
           </Button>
         ) : (
-          <Button className="border-blue-500 border-2 text-blue-500 hover:bg-blue-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md bg-white">
+          <Button className="border-blue-500 border-2 text-blue-500 hover:bg-blue-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md">
             <FaEdit className="mr-2" /> Edit
           </Button>
         )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>New Project</AlertDialogTitle>
+          <AlertDialogTitle className="text-blue-500">
+            New Project
+          </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.
@@ -177,8 +179,11 @@ export function AlertDialogProject({
           )}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md">
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
+            className="hover:border-blue-500  text-white bg-blue-500 flex items-center justify-center py-2 px-4 rounded-md"
             onClick={onSubmit}
             disabled={
               project.name !== "" &&

@@ -74,8 +74,8 @@ export default function Page({ params }: PageProps) {
       <h2 className="text-xl font-bold text-white mb-2">{project.name}</h2>
       <p className="text-white mb-4">{project.description}</p>
 
-      <div className="bg-white p-4 rounded-md">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+      <div className=" p-4 rounded-md">
+        <h3 className="text-white text-lg font-semibold  mb-2">
           Project Status
         </h3>
         <p
@@ -86,26 +86,26 @@ export default function Page({ params }: PageProps) {
           {project.status}
         </p>
 
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        <h3 className="text-lg font-semibold text-white mb-2">
           Client Information
         </h3>
         <div className="flex items-center mb-2">
           <span className="material-icons font-semibold text-green-500 mr-2">
             Name :
           </span>
-          <p className="text-gray-800">{project.client.name}</p>
+          <p className="text-white">{project.client.name}</p>
         </div>
         <div className="flex items-center mb-2">
           <span className="material-icons font-semibold text-green-500 mr-2">
             Email :
           </span>
-          <p className="text-gray-800">{project.client.email}</p>
+          <p className="text-white">{project.client.email}</p>
         </div>
         <div className="flex items-center">
           <span className="material-icons font-semibold text-green-500 mr-2">
             Phone:
           </span>
-          <p className="text-gray-800">{project.client.phone}</p>
+          <p className="text-white">{project.client.phone}</p>
         </div>
       </div>
 

@@ -19,7 +19,7 @@ export function DeleteAlert({ handleDelete }: { handleDelete: () => void }) {
       <AlertDialogTrigger asChild>
         <Button
           onClick={handleDelete}
-          className="border-red-500 border-2 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md bg-white"
+          className="border-red-500 border-2 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center py-2 px-4 rounded-md "
         >
           <FaTrash className="mr-2" /> Delete
         </Button>
